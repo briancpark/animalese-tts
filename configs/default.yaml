@@ -1,0 +1,81 @@
+# Animalese TTS Configuration
+
+# Audio parameters
+audio:
+  sample_rate: 22050
+  n_fft: 1024
+  hop_length: 256
+  win_length: 1024
+  n_mels: 80
+  mel_fmin: 0
+  mel_fmax: 8000
+
+# Animalese-specific parameters
+animalese:
+  # Duration of each character sound in milliseconds
+  char_duration_ms: 70
+  # Pitch variation range (semitones)
+  pitch_range: 12
+  # Base frequency for animalese sounds
+  base_freq: 200
+  # Speed multiplier
+  speed: 1.5
+
+# Model architecture
+model:
+  # Character encoder
+  encoder:
+    vocab_size: 128  # ASCII characters
+    embed_dim: 256
+    hidden_dim: 512
+    n_layers: 4
+    n_heads: 4
+    dropout: 0.1
+
+  # Variance adaptor (pitch, energy, duration)
+  variance_adaptor:
+    hidden_dim: 256
+    kernel_size: 3
+    dropout: 0.1
+
+  # Mel decoder
+  decoder:
+    hidden_dim: 512
+    n_layers: 4
+    n_heads: 4
+    dropout: 0.1
+
+  # Vocoder (lightweight HiFi-GAN style)
+  vocoder:
+    upsample_rates: [8, 8, 2, 2]
+    upsample_kernel_sizes: [16, 16, 4, 4]
+    resblock_kernel_sizes: [3, 7, 11]
+    resblock_dilation_sizes: [[1, 3, 5], [1, 3, 5], [1, 3, 5]]
+    initial_channel: 512
+
+# Training parameters
+training:
+  batch_size: 32
+  learning_rate: 0.0002
+  betas: [0.8, 0.99]
+  weight_decay: 0.0001
+  epochs: 1000
+  warmup_steps: 4000
+  grad_clip: 1.0
+
+  # Loss weights
+  mel_loss_weight: 1.0
+  duration_loss_weight: 1.0
+  pitch_loss_weight: 1.0
+  energy_loss_weight: 1.0
+
+  # Checkpointing
+  save_every: 10
+  log_every: 100
+  eval_every: 5
+
+# Data
+data:
+  train_dir: "data/train"
+  val_dir: "data/val"
+  num_workers: 4
