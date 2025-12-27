@@ -119,6 +119,41 @@ The neural approach uses:
 - **Mel Decoder** - Generates mel spectrograms
 - **HiFi-GAN Vocoder** - Converts mel spectrograms to audio
 
+## Real-Time Speaking
+
+Speak text immediately without saving to a file:
+
+```bash
+# Speak text directly
+./speak.py "Hello! I can speak Animalese!"
+
+# Pipe text to speak
+echo "This is amazing!" | ./speak.py --stdin
+
+# Read from file and speak
+cat story.txt | ./speak.py --stdin
+
+# Different voices
+./speak.py "I'm peppy!" --voice high
+./speak.py "I'm cranky." --voice low
+
+# Adjust speed
+./speak.py "Fast!" --speed 2.0      # 2x faster
+./speak.py "Slow..." --speed 0.5    # Half speed
+```
+
+### Make Claude Code speak to you
+
+You can pipe my responses to the speaker:
+
+```bash
+# In your terminal, create a wrapper
+echo 'Hello from Claude!' | ./speak.py --stdin
+
+# Or integrate into your workflow
+claude "tell me a joke" | tee /dev/tty | ./speak.py --stdin
+```
+
 ## Examples
 
 ```bash
@@ -133,6 +168,9 @@ python animalese_clean.py --text "Oh wow! I found a rare fossil!" --voice high -
 
 # Long dialogue
 python animalese_clean.py --text "Let me tell you about my day..." --voice low --speed 60 --output story.wav
+
+# Real-time speaking
+./speak.py "I can speak in real-time now!"
 ```
 
 ## License
